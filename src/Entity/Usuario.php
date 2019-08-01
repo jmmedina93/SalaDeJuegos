@@ -27,15 +27,31 @@ class Usuario
     private $email;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $password;
+
+    /**
      * @ORM\Column(type="string", length=9)
      */
     private $phone;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Idioma", inversedBy="usuarios")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Roles", inversedBy="usuario")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $idiomaId;
+    private $roles;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Idioma", inversedBy="name")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $idioma;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Solicitud", mappedBy="usuario", cascade={"persist", "remove"})
+     */
+    private $solicitud;
 
     public function getId(): ?int
     {
@@ -66,6 +82,18 @@ class Usuario
         return $this;
     }
 
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
     public function getPhone(): ?string
     {
         return $this->phone;
@@ -78,14 +106,43 @@ class Usuario
         return $this;
     }
 
-    public function getIdiomaId(): ?Idioma
+    public function getRoles(): ?Roles
     {
-        return $this->idiomaId;
+        return $this->roles;
     }
 
-    public function setIdiomaId(?Idioma $idiomaId): self
+    public function setRoles(?Roles $roles): self
     {
-        $this->idiomaId = $idiomaId;
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getIdioma(): ?Idioma
+    {
+        return $this->idioma;
+    }
+
+    public function setIdioma(?Idioma $idioma): self
+    {
+        $this->idioma = $idioma;
+
+        return $this;
+    }
+
+    public function getSolicitud(): ?Solicitud
+    {
+        return $this->solicitud;
+    }
+
+    public function setSolicitud(Solicitud $solicitud): self
+    {
+        $this->solicitud = $solicitud;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $solicitud->getUsuario()) {
+            $solicitud->setUsuario($this);
+        }
 
         return $this;
     }

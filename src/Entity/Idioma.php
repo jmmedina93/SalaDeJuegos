@@ -19,23 +19,13 @@ class Idioma
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\OneToMany(targetEntity="App\Entity\Usuario", mappedBy="idioma")
      */
-    private $nombre;
-
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
-    private $locale;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Usuario", mappedBy="idiomaId")
-     */
-    private $usuarios;
+    private $name;
 
     public function __construct()
     {
-        $this->usuarios = new ArrayCollection();
+        $this->name = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -43,55 +33,31 @@ class Idioma
         return $this->id;
     }
 
-    public function getNombre(): ?string
-    {
-        return $this->nombre;
-    }
-
-    public function setNombre(string $nombre): self
-    {
-        $this->nombre = $nombre;
-
-        return $this;
-    }
-
-    public function getLocale(): ?string
-    {
-        return $this->locale;
-    }
-
-    public function setLocale(string $locale): self
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Usuario[]
      */
-    public function getUsuarios(): Collection
+    public function getName(): Collection
     {
-        return $this->usuarios;
+        return $this->name;
     }
 
-    public function addUsuario(Usuario $usuario): self
+    public function addName(Usuario $name): self
     {
-        if (!$this->usuarios->contains($usuario)) {
-            $this->usuarios[] = $usuario;
-            $usuario->setIdiomaId($this);
+        if (!$this->name->contains($name)) {
+            $this->name[] = $name;
+            $name->setIdioma($this);
         }
 
         return $this;
     }
 
-    public function removeUsuario(Usuario $usuario): self
+    public function removeName(Usuario $name): self
     {
-        if ($this->usuarios->contains($usuario)) {
-            $this->usuarios->removeElement($usuario);
+        if ($this->name->contains($name)) {
+            $this->name->removeElement($name);
             // set the owning side to null (unless already changed)
-            if ($usuario->getIdiomaId() === $this) {
-                $usuario->setIdiomaId(null);
+            if ($name->getIdioma() === $this) {
+                $name->setIdioma(null);
             }
         }
 
