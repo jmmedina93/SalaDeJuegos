@@ -53,6 +53,12 @@ class Usuario
      */
     private $solicitud;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Centro", inversedBy="usuario")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $centro;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -143,6 +149,18 @@ class Usuario
         if ($this !== $solicitud->getUsuario()) {
             $solicitud->setUsuario($this);
         }
+
+        return $this;
+    }
+
+    public function getCentro(): ?Centro
+    {
+        return $this->centro;
+    }
+
+    public function setCentro(?Centro $centro): self
+    {
+        $this->centro = $centro;
 
         return $this;
     }

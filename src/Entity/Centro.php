@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\IdiomaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CentroRepository")
  */
-class Idioma
+class Centro
 {
     /**
      * @ORM\Id()
@@ -21,10 +21,15 @@ class Idioma
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $nombre;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Usuario", mappedBy="idioma")
+     * @ORM\Column(type="integer")
+     */
+    private $n_salas;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Usuario", mappedBy="centro")
      */
     private $usuario;
 
@@ -38,14 +43,26 @@ class Idioma
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getNombre(): ?string
     {
-        return $this->name;
+        return $this->nombre;
     }
 
-    public function setName(string $name): self
+    public function setNombre(string $nombre): self
     {
-        $this->name = $name;
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    public function getNSalas(): ?int
+    {
+        return $this->n_salas;
+    }
+
+    public function setNSalas(int $n_salas): self
+    {
+        $this->n_salas = $n_salas;
 
         return $this;
     }
@@ -62,7 +79,7 @@ class Idioma
     {
         if (!$this->usuario->contains($usuario)) {
             $this->usuario[] = $usuario;
-            $usuario->setLanguage($this);
+            $usuario->setCentro($this);
         }
 
         return $this;
@@ -73,8 +90,8 @@ class Idioma
         if ($this->usuario->contains($usuario)) {
             $this->usuario->removeElement($usuario);
             // set the owning side to null (unless already changed)
-            if ($usuario->getLanguage() === $this) {
-                $usuario->setLanguage(null);
+            if ($usuario->getCentro() === $this) {
+                $usuario->setCentro(null);
             }
         }
 

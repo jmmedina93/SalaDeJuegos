@@ -8,14 +8,9 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="row">
-    <div class="col-6 offset-3">
-        <div class="card bg-light">
-            <div class="card-body">
-                <h1 class="text-center">Introduce tus datos</h1>
-                {{ form(formLogin) }}
-            </div>
-        </div>
-    </div>
+<div class="example-wrapper">
+    <h1 class="text-center">Introduce tus datos</h1>
+    <span><a href="{{ path('login') }}">Logeate</a></span>
+    <span><a href="{{ path('usuario_new') }}">Registrate</a></span>
 </div>
 {% endblock %}
